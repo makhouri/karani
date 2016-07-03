@@ -22,6 +22,16 @@ public class SinglyLinkedList {
          * move tail to next (newly created node)
          * increment size also.
          */
+        if(head == null){
+            head = new Node(value);
+            tail=head;
+            size=1;
+        }
+        else{
+            Node newNode = new Node(value,head);
+            tail = newNode;
+            size++;
+        }
     }
 
     public boolean contains(int value) {
@@ -30,8 +40,20 @@ public class SinglyLinkedList {
          * Use temp node to iterate over the list.
          * Do not change head node as head = head.next
          */
+        Node temp = head;
+        int flag = 0;
+        if(size > 0){
+            do{
+                if(temp.value == value){
+                    flag = 1;
+                    break;
+                }
+                temp = temp.next;
+            }while(temp != null);
+        }
 
-        return true ? true : false;
+        return (flag == 1) ? true : false;
+//        return flag;
     }
 
     public boolean delete(int value) {
@@ -41,8 +63,44 @@ public class SinglyLinkedList {
          * so we have to delete from previous node.
          * just update the reference for n1.next from n2 to n2.next
          */
+        Node temp = head;
+        Node previous = head;
+        int flag = 0;
+        if(contains(value)){
+            if(size == 1){
+                flag = 1;
+                head=null;
+                tail=null;
+                size--;
+            }
+            else{
+                do{
+                    if(temp.value==value && temp==head){
+                        flag=1;
+                        head=head.next;
+                        size--;
+                        break;
+                    }
+                    if(temp.value == value){
+                        flag=1;
+                        previous.next=temp.next;
+                        size--;
+                        break;
+                    }
+                    if(temp.value==value && temp==tail){
+                        flag=1;
+                        previous.next=null;
+                        size--;
+                        tail=previous;
+                        break;
+                    }
+                    previous=temp;
+                    temp=temp.next;
+                }while(temp!=null);
+            }
+        }
 
-        return true ? true : false;
+        return (flag == 1) ? true : false;
     }
 
     public int size() {
@@ -63,10 +121,15 @@ public class SinglyLinkedList {
 
         Node(int v) {
             // write code here
+            this.value = v;
+            this.next=null;
         }
 
         Node(int v, Node n) {
             // write code here to initialize value and next Node.
+            Node newNode = new Node(v);
+            n.next=newNode;
+            
         }
     }
 }
